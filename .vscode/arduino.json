@@ -1,0 +1,5 @@
+{
+    "port": "COM13",
+    "board": "arduino:avr:uno",
+    "sketch": "GameArt\\GameArt.ino"
+}
