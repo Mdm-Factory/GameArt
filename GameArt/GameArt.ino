@@ -1,78 +1,71 @@
-int VRx = A0;
-int VRy = A1;
-int SW = 2;
+#include "lcdManager.h"
+#include "soundManager.h"
+#include "joystickManager.h"
 
-int xPosition = 0;
-int yPosition = 0;
-int SW_state = 0;
-int mapX = 0;
-int mapY = 0;
-
-int randomOutputPin;
-const int buzzer = 9;
-
-void PayYouLose(){
-  int starttone = 800;
-
-  for (int i=0; i<500; i--){
-    tone(buzzer, starttone);
-    starttone--;
-    delay(4);
-  }
-  delay(1000);       
-  noTone(buzzer);     
-  //delay(400);       
-}
-
-void PayMiss(){
-  int starttone = 500;
-  tone(buzzer, starttone);
-  delay(100);
-  noTone(buzzer); 
-}
-
-
+int randomOutputPin;  // which random LED is about to blink?
+int currentScore = 0;
+int currentHealth = 10;
 void setup() {
+
   // so we can debug the ouput
   Serial.begin(115200); 
   
-  //assign pins for joystick inputs
-  pinMode(VRx, INPUT);
-  pinMode(VRy, INPUT);
-  pinMode(SW, INPUT_PULLUP); 
-  
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(LED_BUILTIN, OUTPUT);  
-
-  pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
-  PayMiss();
+  setupJoystick();
+  setupSound();
 
 }
 
 
 void loop() {
-  xPosition = analogRead(VRx);
-  yPosition = analogRead(VRy);
-  SW_state = digitalRead(SW);
-  mapX = map(xPosition, 0, 1023, -512, 512);
-  mapY = map(yPosition, 0, 1023, -512, 512);
-  
-  randomOutputPin = random(5, 9);
 
-  Serial.print("X: ");
-  Serial.print(mapX);
-  Serial.print(" | Y: ");
-  Serial.print(mapY);
-  Serial.print("Random Output: ");
-  Serial.print(randomOutputPin);  
-  Serial.print(" | Button: ");
-  Serial.println(SW_state);
+  // reset the progress indicators
+  setupLCDHomeScreen();
+  currentHealth = 10;
+  currentScore = 0;
 
-  digitalWrite(LED_BUILTIN, !SW_state);
-  if (SW_state == 0){ PayMiss();}
-  
+  // wait until player is ready!
+  while (!buttonIsPressed){
+    delay(50);
+  }
 
+  // game start
+  startProgress(); 
 
-  delay(100);
-  
+  // game loop
+  while (currentHealth > 0){
+    randomOutputPin = random(5, 9);
+    checkJoytickPosition(randomOutputPin);  //need to check user inputs
+
+    digitalWrite(LED_BUILTIN, buttonIsPressed());  //just for testing
+    
+    // for testing the UI
+    if (buttonIsPressed())
+      { 
+        PlayMiss();
+        currentHealth--;
+        displayProgress(currentScore, currentHealth);
+      } else {
+        currentScore++;
+      }
+
+    // only display score in increments of 10  (refresh rate problem)
+    if (currentScore % 10 == 0) {
+      displayProgress(currentScore, currentHealth);
+    }
+
+    // wait for inputs
+    delay(50);
+  }
+
+  // Game Over
+  endProgress(currentScore);
+  //PlayYouLose();
+
+  // wait until player is ready to start again!
+  while (!buttonIsPressed){
+    delay(50);
+  }
+
 }
