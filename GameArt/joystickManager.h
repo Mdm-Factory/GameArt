@@ -20,12 +20,6 @@ void checkJoytickPosition(int currentTargetLed){
   mapX = map(xPosition, 0, 1023, -512, 512);
   mapY = map(yPosition, 0, 1023, -512, 512);
 
-  Serial.print("X: ");
-  Serial.print(mapX);
-  Serial.print(" | Y: ");
-  Serial.print(mapY);
-  Serial.print("Random Output: ");
-  Serial.println(currentTargetLed);  
 }
 
 int buttonIsPressed(){

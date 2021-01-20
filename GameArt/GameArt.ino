@@ -26,7 +26,7 @@ void loop() {
   currentScore = 0;
 
   // wait until player is ready!
-  while (!buttonIsPressed){
+  while (!buttonIsPressed()){
     delay(50);
   }
 
@@ -61,10 +61,10 @@ void loop() {
 
   // Game Over
   endProgress(currentScore);
-  //PlayYouLose();
+  PlayYouLose();
 
   // wait until player is ready to start again!
-  while (!buttonIsPressed){
+  while (!buttonIsPressed()){
     delay(50);
   }
 

@@ -17,7 +17,7 @@ void setupLCDHomeScreen()
    
   
   lcd.setCursor ( 0, 0 );            // go to the top left corner
-  lcd.print("    GameArt!        "); // write this string on the top row
+  lcd.print("      GameArt!      "); // write this string on the top row
   lcd.setCursor ( 0, 1 );            // go to the 2nd row
   lcd.print("   By Luke & Dad    "); // pad string with spaces for centering
   lcd.setCursor ( 0, 2 );            // go to the third row
@@ -46,17 +46,20 @@ void displayProgress(int score, int health){
   // Line 0 Score
   lineText = "";
   lineText += score;  
-  lcd.setCursor ( 7, 0 );           
+  lcd.setCursor ( 7, 0 );      
   lcd.print(lineText);
 
   // Line 1 Health
   lineText = "";
   if (health > 10) {health=10;}
-  for (int i=0; i <= health; i++ ){
+  for (int i=1; i <= health; i++ ){
       lineText.concat("#");
   }
   lcd.setCursor ( 7, 1 );    
-  lcd.print(lineText);      
+  lcd.print("           ");   // clear line  
+  lcd.setCursor ( 7, 1 );  
+  lcd.print(lineText);   
+      
     
   
 }
