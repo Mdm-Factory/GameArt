@@ -10,6 +10,12 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 /*********************************************************/
+
+int lastHealth = 0;
+int lastScore = 0;
+int lastAngle = 0;
+int lastMagnitude = 0;
+
 void setupLCDHomeScreen()
 {
   lcd.init();  //initialize the lcd
@@ -34,38 +40,59 @@ void startProgress(){
   lcd.setCursor ( 0, 1 ); 
   lcd.print("Health:              ");   // clear line
   lcd.setCursor ( 0, 2 ); 
-  lcd.print("                    ");   // clear line
+  lcd.print("Angle :              ");   // clear line
   lcd.setCursor ( 0, 3 ); 
-  lcd.print("                    ");   // clear line
+  lcd.print("Mag   :              ");   // clear line
 }
 
-void displayProgress(int score, int health){
+void displayProgress(int score, int health, int angle, int magnitude){
 
   String lineText = "";
 
   // Line 0 Score
-  lineText = "";
-  lineText += score;  
-  lcd.setCursor ( 7, 0 );      
-  lcd.print(lineText);
+  if (lastScore != score){  
+    lineText += score;  
+    lcd.setCursor ( 7, 0 );      
+    lcd.print(score);    
+  }
 
   // Line 1 Health
-  lineText = "";
-  if (health > 10) {health=10;}
-  for (int i=1; i <= health; i++ ){
-      lineText.concat("#");
+  if (lastHealth != health){
+    lineText = "";
+    if (health > 10) {health=10;}
+    for (int i=1; i <= health; i++ ){
+        lineText.concat("#");
+    }
+    lcd.setCursor ( 7, 1 );    
+    lcd.print("          ");   // clear line  
+    lcd.setCursor ( 7, 1 );  
+    lcd.print(lineText); 
   }
-  lcd.setCursor ( 7, 1 );    
-  lcd.print("           ");   // clear line  
-  lcd.setCursor ( 7, 1 );  
-  lcd.print(lineText);   
-      
-    
-  
+   
+
+  // Line 2 magnitude
+  if (lastAngle != angle){
+    lcd.setCursor ( 7, 2 );    
+    lcd.print("           ");   // clear line  
+    lcd.setCursor ( 7, 2 );  
+    lcd.print(angle);        
+    }
+
+  // Line 3 angle
+  if (lastMagnitude != magnitude){
+    lcd.setCursor ( 7, 3 );    
+    lcd.print("          ");   // clear line  
+    lcd.setCursor ( 7, 3 );  
+    lcd.print(magnitude);        
+    }   
+
+  lastHealth = health;
+  lastScore = score;
+  lastAngle = angle;
+  lastMagnitude = magnitude;
 }
 
-
-// you lose
+// Game over.
 void endProgress(int score)
 {   
   lcd.setCursor ( 0, 0 );           

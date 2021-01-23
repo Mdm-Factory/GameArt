@@ -1,3 +1,5 @@
+#include <math.h>
+
 int VRx = A0;
 int VRy = A1;
 int SW = 2;
@@ -7,6 +9,16 @@ int yPosition = 0;
 int mapX = 0;
 int mapY = 0;
 
+int xpos = 0;
+int ypos = 0;
+int* returnValues[2] = {0, 0};  // angle, magnitude
+
+struct positions  {
+   int angle;
+   double magnitude;
+};
+
+struct positions pos;
 void setupJoystick(){
   // assign pins for joystick inputs
   pinMode(VRx, INPUT);
@@ -14,11 +26,24 @@ void setupJoystick(){
   pinMode(SW, INPUT_PULLUP); 
 }
 
-void checkJoytickPosition(int currentTargetLed){
-  xPosition = analogRead(VRx);
-  yPosition = analogRead(VRy);
-  mapX = map(xPosition, 0, 1023, -512, 512);
-  mapY = map(yPosition, 0, 1023, -512, 512);
+struct positions checkJoytickPosition(){
+
+    long x = analogRead(VRx) - 512;
+    long y = analogRead(VRy) - 512;
+
+    float angle = atan2( y, x );                 // in radians, zero is joystick move to right
+    float angleDegrees = angle * 57.2958 * 2;
+    float magnitude = sqrt( x*x + y*y);    // Pythagoras
+
+    if( magnitude > 512) magnitude = 512;
+
+    // for future use?
+    x = magnitude * cos( angle );
+    y = magnitude * sin( angle );
+
+    pos.angle = angleDegrees;
+    pos.magnitude = magnitude;    
+    return pos;   
 
 }
 

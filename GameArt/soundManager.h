@@ -1,4 +1,4 @@
-const int buzzerPin = 9;  
+const int buzzerPin = 6;  
 
 void PlayYouLose(){
   int starttone = 800;
@@ -21,7 +21,7 @@ void PlayMiss(){
 }
 
 void PlayOk(){
-  int starttone = 1000;
+  int starttone = 1500;
   tone(buzzerPin, starttone);
   delay(100);
   noTone(buzzerPin); 
