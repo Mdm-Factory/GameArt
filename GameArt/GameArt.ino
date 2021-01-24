@@ -2,7 +2,7 @@
 #include "lcdManager.h"
 #include "soundManager.h"
 #include "joystickManager.h"
-#include "gameRulesTest.h"
+#include "gameRules.h"
 
 //TimedAction timedAction = TimedAction(1000,blink);
 
@@ -85,7 +85,8 @@ void loop() {
         break;
     }
 
-    //delay(50);
+    delay(100);
+    currentScore++;  //you get somepoints for showing up.
   }
 
   // Game Over

@@ -32,7 +32,7 @@ struct positions checkJoytickPosition(){
     long y = analogRead(VRy) - 512;
 
     float angle = atan2( y, x );                 // in radians, zero is joystick move to right
-    float angleDegrees = angle * 57.2958 * 2;
+    float angleDegrees = abs(angle * 57.2958 * 2);
     float magnitude = sqrt( x*x + y*y);    // Pythagoras
 
     if( magnitude > 512) magnitude = 512;

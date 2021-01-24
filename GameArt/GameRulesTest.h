@@ -24,7 +24,6 @@ int checkUserInput(int targetLED, int angle, int magnitude){
     int awardedPoints = 10;
     bool triggeredMagnitude = (magnitude > minMagnitude);
     if (outOfTime()){
-
         if (triggeredMagnitude){
             return awardedPoints;
         } else{
@@ -32,12 +31,4 @@ int checkUserInput(int targetLED, int angle, int magnitude){
         }
     }
     return 0; //still have time
-    if (outOfTime()){
-        return -1;
-    } else if (triggeredMagnitude){
-        return awardedPoints;
-    } else {
-        return 0;  //still have time
-    }
-
 }
