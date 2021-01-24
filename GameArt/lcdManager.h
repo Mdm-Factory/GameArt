@@ -19,8 +19,7 @@ int lastMagnitude = 0;
 void setupLCDHomeScreen()
 {
   lcd.init();  //initialize the lcd
-  lcd.backlight();  //open the backlight 
-   
+  lcd.backlight();  //open the backlight    
   
   lcd.setCursor ( 0, 0 );            // go to the top left corner
   lcd.print("      GameArt!      "); // write this string on the top row
@@ -99,8 +98,11 @@ void endProgress(int score)
   lcd.print("Game Over!           "); 
   lcd.setCursor ( 0, 1 );            
   lcd.print("Final Score:         ");
-  lcd.setCursor ( 0, 2 );            
+  lcd.setCursor ( 0, 2 );
+  lcd.print("                     ");
   lcd.print(score);
+  lcd.setCursor ( 0, 3 );            
+  lcd.print("                     ");
   lcd.setCursor ( 0, 3 );           
   lcd.print("Press to play Again!");
 }

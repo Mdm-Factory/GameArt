@@ -1,13 +1,8 @@
 const int buzzerPin = 6;  
 
-void PlayYouLose(){
+void PlayGameOver(){
   int starttone = 800;
 
-  //for (int i=0; i<200; i--){
-  //  tone(buzzer, starttone);
-  //  starttone--;
-  //  delay(10);
-  //}     
   tone(buzzerPin, 500);
   delay(2000);
   noTone(buzzerPin);         

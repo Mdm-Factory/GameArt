@@ -1,9 +1,12 @@
+//#include <TimedAction.h>
 #include "lcdManager.h"
 #include "soundManager.h"
 #include "joystickManager.h"
-#include "gameRules.h"
+#include "gameRulesTest.h"
 
-int currentLEDOn;  // which random LED is about to blink?
+//TimedAction timedAction = TimedAction(1000,blink);
+
+int currentLEDOn = 11;  // which random LED is about to blink?
 int currentScore = 0;
 int currentHealth = 10;
 struct positions joystickVector;
@@ -13,7 +16,7 @@ int ledOutputs[4] = {11,8,9,13};  // up, right, down, left
 void setup() {
 
   // so we can debug the ouput
-  Serial.begin(115200); 
+   Serial.begin(9600); 
 
   // special setup for header modules
   setupJoystick();
@@ -21,7 +24,6 @@ void setup() {
 
   // fun welcome sequence, also set LED to OUTPUT mode
   for (int i=0; i <4; i++){
-    Serial.println(ledOutputs[i]);
     pinMode(ledOutputs[i], OUTPUT); 
     digitalWrite(ledOutputs[i], 1); 
     PlayOk();
@@ -40,7 +42,7 @@ void loop() {
 
   // wait until player is ready!
   while (!buttonIsPressed()){
-    delay(50);
+    delay(100);
   }
 
   // game start
@@ -50,15 +52,19 @@ void loop() {
   //currentLEDOn = nextRandomLed();
   // game loop
   while (currentHealth > 0){   
-    joystickVector = checkJoytickPosition();  //need to check user inputs
-    int points = checkUserInput(currentLEDOn, joystickVector.angle, joystickVector.magnitude );
 
     if (advanceNextLED){
         digitalWrite(currentLEDOn, 0);  // turn off current LED
-        delay(pauseAfterMiss);  // catch your breath
         currentLEDOn = ledOutputs[nextRandomLed()];   
         digitalWrite(currentLEDOn, 1); // light it up!
+        //Serial.println("New target: " + currentLEDOn);
+        //PlayOk();
+        advanceNextLED = false;
     }
+
+    joystickVector = checkJoytickPosition();  //need to check user inputs
+    int points = checkUserInput(currentLEDOn, joystickVector.angle, joystickVector.magnitude );
+    displayProgress(currentScore, currentHealth, joystickVector.angle, joystickVector.magnitude);
 
     switch (points) {
       case 0:
@@ -69,6 +75,7 @@ void loop() {
         PlayMiss();
         currentHealth--;
         advanceNextLED = true;
+        //delay(pauseAfterMiss);  // catch your breath
         break;
       default:   
         // any positive number of points to award
@@ -78,19 +85,12 @@ void loop() {
         break;
     }
 
-
-
-    displayProgress(currentScore, currentHealth, joystickVector.angle, joystickVector.magnitude);
-    delay(50);      // wait for inputs
+    //delay(50);
   }
 
   // Game Over
   endProgress(currentScore);
-  PlayYouLose();
-
-  // wait until player is ready to start again!
-  while (!buttonIsPressed()){
-    delay(50);
-  }
+  PlayGameOver();
+  delay(3000);
 
 }
