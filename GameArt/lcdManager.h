@@ -35,13 +35,13 @@ void setupLCDHomeScreen()
 
 void startProgress(){
   lcd.setCursor ( 0, 0 ); 
-  lcd.print("Score :              ");   // clear line
+  lcd.print(" Score :             ");   // clear line
   lcd.setCursor ( 0, 1 ); 
-  lcd.print("Health:              ");   // clear line
+  lcd.print(" Health:             ");   // clear line
   lcd.setCursor ( 0, 2 ); 
-  lcd.print("Angle :              ");   // clear line
+  lcd.print(" Angle :             ");   // clear line
   lcd.setCursor ( 0, 3 ); 
-  lcd.print("Mag   :              ");   // clear line
+  lcd.print(" Mag   :             ");   // clear line
 }
 
 void displayProgress(int score, int health, int angle, int magnitude){
@@ -62,26 +62,25 @@ void displayProgress(int score, int health, int angle, int magnitude){
     for (int i=1; i <= health; i++ ){
         lineText.concat("#");
     }
-    lcd.setCursor ( 7, 1 );    
+    lcd.setCursor ( 8, 1 );    
     lcd.print("          ");   // clear line  
-    lcd.setCursor ( 7, 1 );  
+    lcd.setCursor ( 8, 1 );  
     lcd.print(lineText); 
   }
    
-
   // Line 2 magnitude
   if (lastAngle != angle){
-    lcd.setCursor ( 7, 2 );    
+    lcd.setCursor ( 8, 2 );    
     lcd.print("           ");   // clear line  
-    lcd.setCursor ( 7, 2 );  
+    lcd.setCursor ( 8, 2 );  
     lcd.print(angle);        
     }
 
   // Line 3 angle
   if (lastMagnitude != magnitude){
-    lcd.setCursor ( 7, 3 );    
-    lcd.print("          ");   // clear line  
-    lcd.setCursor ( 7, 3 );  
+    lcd.setCursor ( 8, 3 );    
+    lcd.print("         ");   // clear line  
+    lcd.setCursor ( 8, 3 );  
     lcd.print(magnitude);        
     }   
 
@@ -95,14 +94,14 @@ void displayProgress(int score, int health, int angle, int magnitude){
 void endProgress(int score)
 {   
   lcd.setCursor ( 0, 0 );           
-  lcd.print("Game Over!           "); 
+  lcd.print(" Game Over!         "); 
   lcd.setCursor ( 0, 1 );            
-  lcd.print("Final Score:         ");
+  lcd.print("                    ");
   lcd.setCursor ( 0, 2 );
   lcd.print("                     ");
   lcd.print(score);
   lcd.setCursor ( 0, 3 );            
   lcd.print("                     ");
   lcd.setCursor ( 0, 3 );           
-  lcd.print("Press to play Again!");
+  lcd.print("Press to play Again! ");
 }

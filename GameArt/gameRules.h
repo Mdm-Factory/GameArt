@@ -9,6 +9,7 @@ int angleTolerance2 = 15;  //how close you need to get points2
 int points2 = 10;
 int startingDelay = 1000;
 int minimumDelay = 250;  
+int delayDecrement = 10;
 
 unsigned int startTime = 0;
 
@@ -22,7 +23,7 @@ int nextRandomLed(){
 
 bool outOfTime(){
     int elapsedTime = millis() - startTime;
-    if (elapsedTime >= 2000){  
+    if (elapsedTime >= startingDelay){  
         return true;
     }
     return false;
@@ -35,7 +36,7 @@ int checkUserInput(int targetLED, int angle, int magnitude){
     if (!outOfTime()){ return 0;}
     
     // increase speed
-    startingDelay = startingDelay -20 ;
+    startingDelay = startingDelay - delayDecrement ;
     if (startingDelay < minimumDelay) {startingDelay = minimumDelay;}
 
     int awardedPoints = 0;
