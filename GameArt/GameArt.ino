@@ -7,6 +7,7 @@
 //TimedAction timedAction = TimedAction(1000,blink);
 
 int currentLEDOn = 11;  // which random LED is about to blink?
+int currentLEDPosition = 0;
 int currentScore = 0;
 int currentHealth = 10;
 struct positions joystickVector;
@@ -39,7 +40,7 @@ void loop() {
   setupLCDHomeScreen();
   currentHealth = 10;
   currentScore = 0;
-
+  currentLEDPosition = 0;
   // wait until player is ready!
   while (!buttonIsPressed()){
     delay(100);
@@ -55,7 +56,8 @@ void loop() {
 
     if (advanceNextLED){
         digitalWrite(currentLEDOn, 0);  // turn off current LED
-        currentLEDOn = ledOutputs[nextRandomLed()];   
+        currentLEDPosition = nextRandomLed();
+        currentLEDOn = ledOutputs[currentLEDPosition];   
         digitalWrite(currentLEDOn, 1); // light it up!
         //Serial.println("New target: " + currentLEDOn);
         //PlayOk();
@@ -63,7 +65,7 @@ void loop() {
     }
 
     joystickVector = checkJoytickPosition();  //need to check user inputs
-    int points = checkUserInput(currentLEDOn, joystickVector.angle, joystickVector.magnitude );
+    int points = checkUserInput(currentLEDPosition, joystickVector.angle, joystickVector.magnitude );
     displayProgress(currentScore, currentHealth, joystickVector.angle, joystickVector.magnitude);
 
     switch (points) {
@@ -92,6 +94,6 @@ void loop() {
   // Game Over
   endProgress(currentScore);
   PlayGameOver();
-  delay(3000);
+  delay(2000);
 
 }

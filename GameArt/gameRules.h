@@ -9,7 +9,7 @@ int angleTolerance2 = 15;  //how close you need to get points2
 int points2 = 10;
 int startingDelay = 1000;
 int minimumDelay = 250;  
-int delayDecrement = 10;
+int delayDecrement = 15;
 
 unsigned int startTime = 0;
 
@@ -31,7 +31,7 @@ bool outOfTime(){
 
 
 // returns number of points to award 0, 5, 10.  -1 will indicate a miss
-int checkUserInput(int targetLED, int angle, int magnitude){
+int checkUserInput(int targetLEDPos, int angle, int magnitude){
 
     if (!outOfTime()){ return 0;}
     
@@ -40,8 +40,10 @@ int checkUserInput(int targetLED, int angle, int magnitude){
     if (startingDelay < minimumDelay) {startingDelay = minimumDelay;}
 
     int awardedPoints = 0;
-    int targetAngle = anglePositions[targetLED];
+    int targetAngle = anglePositions[targetLEDPos];
     bool triggeredMagnitude = (magnitude > minMagnitude); 
+
+    Serial.println(targetAngle);
     if (triggeredMagnitude){
         if ((angle >= targetAngle - angleTolerance2) && (angle <= targetAngle + angleTolerance2)){
                 // within tight tolerance, more points!!
@@ -51,9 +53,6 @@ int checkUserInput(int targetLED, int angle, int magnitude){
                 // within looser tolerance, fewer points.
                 awardedPoints = points1;
                 Serial.println("Okay hit.");
-        } else if (targetLED = 9) {
-            // ringer, always get credit for this one.
-            awardedPoints = 15;
         } else {
             awardedPoints = -1;  //miss
         }
